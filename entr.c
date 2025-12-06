@@ -430,8 +430,9 @@ set_options(char *argv[]) {
 	int argc;
 
 	/* read arguments until we reach a command */
-	for (argc = 1; argv[argc] != 0 && argv[argc][0] == '-'; argc++)
+	for (argc = 0; argv[argc] != 0; argc++)
 		;
+	optind = 1;
 	while ((ch = getopt(argc, argv, "acdnprsxzLo:")) != -1) {
 		switch (ch) {
 		case 'a':
