@@ -508,8 +508,13 @@ set_options(char *argv[]) {
 	int argc;
 
 	/* read arguments until we reach a command */
-	for (argc = 1; argv[argc] != 0 && argv[argc][0] == '-'; argc++)
-		;
+	for (argc = 1; argv[argc] != 0 && argv[argc][0] == '-'; argc++) {
+		if (strcmp(argv[argc], "-o") == 0) {
+			argc++;
+			if (argv[argc] == 0) break;
+		}
+	}
+
 	while ((ch = getopt(argc, argv, "acdDnprsxzLo:")) != -1) {
 		switch (ch) {
 		case 'a':
@@ -544,7 +549,7 @@ set_options(char *argv[]) {
 			break;
 			
 			 /* 새로 추가한 로그 활성화 옵션 */
-   		 case 'L':
+		case 'L':
         	log_set_enabled(1);
         	break;
 
