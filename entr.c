@@ -801,13 +801,6 @@ main:
         file = wd_to_file(event->wd); // Helper from inotify.c
         if (file == NULL) continue;
 
-		// 파일 생성 감지
-        if ((event->mask & IN_CREATE) && file->is_dir && event->len > 0) {
-            if (log_enabled()) {
-                log_line("created: %s/%s", file->fn, event->name);
-            }
-        }
-
 		// 삭제 이벤트 로그 기능
 		// 1. 감시 중인 파일 자체가 삭제된 경우 (예: rm test.txt)
         if (event->mask & IN_DELETE_SELF) {
