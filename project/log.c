@@ -249,18 +249,7 @@ void log_line(const char *fmt, ...) {
 }
 
 
-/* 파일 이름만 받으면 "modified: %s" 출력 */
-void log_write(const char *filename) {
-    if (!filename || !filename[0]) return;
-    log_line("modified: %s", filename);
 
-    if (deletenull(filename)) {
-        log_line("file deleted: %s", filename);
-    }
-    if (createnull(filename)) {
-        log_line("file created: %s", filename);
-    }
-}
 
 /* 파일 생성 이벤트 */
 void log_created(const char *filename) {
