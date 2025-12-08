@@ -801,6 +801,22 @@ main:
         file = wd_to_file(event->wd); // Helper from inotify.c
         if (file == NULL) continue;
 
+		// 삭제 이벤트 로그 기능
+		// 1. 감시 중인 파일 자체가 삭제된 경우 (예: rm test.txt)
+        if (event->mask & IN_DELETE_SELF) {
+            if (log_enabled()) {
+				log_line("deleted: %s", file->fn);
+            }
+        }
+
+        // 2. 감시 중인 디렉토리 안의 파일이 삭제된 경우 (-d 옵션 사용 시)
+        if ((event->mask & IN_DELETE) && file->is_dir && event->len > 0) {
+            if (log_enabled()) {
+                // 디렉토리 경로/삭제된 파일명 형태로 기록
+                log_line("deleted: %s/%s", file->fn, event->name);
+            }
+        }
+
         /* 디버그 출력 (ENTR_DEBUG 환경 변수 설정 시에만) */
         if (getenv("ENTR_DEBUG")) {
             fprintf(stderr, "[EVENT] mask=0x%x file=%s do_exec=%d\n",
