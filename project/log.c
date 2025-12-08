@@ -253,6 +253,13 @@ void log_line(const char *fmt, ...) {
 void log_write(const char *filename) {
     if (!filename || !filename[0]) return;
     log_line("modified: %s", filename);
+    
+    if (deletenull(filename)) {
+        log_line("file deleted: %s", filename);
+    }
+    if (createnull(filename)) {
+        log_line("file created: %s", filename);
+    }
 }
 
 /* 열려 있는 로그 파일 닫기 */

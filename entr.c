@@ -415,7 +415,7 @@ process_keyboard_event(int fd) {
     }
 }
 
-// 기타 로직
+// 파일 목록 처리 함수
 
 int
 process_input(FILE *file, WatchFile *files[], int max_files) {
