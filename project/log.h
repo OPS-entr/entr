@@ -86,4 +86,10 @@ void log_close(void);
 /* 기존 인터페이스: 변경된 파일 이름을 한 줄 기록 ("modified: %s") */
 void log_write(const char *filename);
 
+/* 파일 이벤트별 로그 함수들 */
+void log_created(const char *filename);
+void log_modified(const char *filename);
+void log_deleted(const char *filename);
+void log_moved(const char *old_path, const char *new_path);
+
 #endif 

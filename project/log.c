@@ -253,13 +253,37 @@ void log_line(const char *fmt, ...) {
 void log_write(const char *filename) {
     if (!filename || !filename[0]) return;
     log_line("modified: %s", filename);
-    
+
     if (deletenull(filename)) {
         log_line("file deleted: %s", filename);
     }
     if (createnull(filename)) {
         log_line("file created: %s", filename);
     }
+}
+
+/* 파일 생성 이벤트 */
+void log_created(const char *filename) {
+    if (!filename || !filename[0]) return;
+    log_line("created: %s", filename);
+}
+
+/* 파일 수정 이벤트 */
+void log_modified(const char *filename) {
+    if (!filename || !filename[0]) return;
+    log_line("modified: %s", filename);
+}
+
+/* 파일 삭제 이벤트 */
+void log_deleted(const char *filename) {
+    if (!filename || !filename[0]) return;
+    log_line("deleted: %s", filename);
+}
+
+/* 파일 이동/이름 변경 이벤트 */
+void log_moved(const char *old_path, const char *new_path) {
+    if (!old_path || !old_path[0] || !new_path || !new_path[0]) return;
+    log_line("moved: %s -> %s", old_path, new_path);
 }
 
 /* 열려 있는 로그 파일 닫기 */

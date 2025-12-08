@@ -19,6 +19,7 @@
 #include <fcntl.h>       // inotify_init1의 IN_CLOEXEC을 위해 추가
 #include "entr.h"        // WatchFile, 전역 변수, 함수 원형
 #include "event.h" // inotify 함수의 인터페이스 선언
+#include "log.h"   // 로그 함수들
 
 // =========================================================================
 // [inotify 시스템 호출 선언 (표준 C 라이브러리에서 가져옴)]
@@ -227,12 +228,25 @@ main:
 
             // 일반 변경 이벤트 처리
             if (event->mask & (IN_MODIFY | IN_ATTRIB | IN_CLOSE_WRITE | IN_DELETE | IN_CREATE | IN_MOVED_FROM | IN_MOVED_TO)) {
-                
+
                 // 디렉토리 변경 감지는 파일 생성/삭제/이동 시에만 처리
                 if (file->is_dir == 1 && dir_modified == 0)
                     continue;
                 if ((dir_modified > 0) && (restart_opt == 1))
                     continue; // restart 모드일 때 디렉토리 변경은 무시
+
+                // 이벤트 타입별 로그 기록
+                if (event->mask & IN_CREATE) {
+                    log_created(file->fn);
+                } else if (event->mask & IN_DELETE) {
+                    log_deleted(file->fn);
+                } else if (event->mask & (IN_MODIFY | IN_CLOSE_WRITE)) {
+                    log_modified(file->fn);
+                } else if (event->mask & IN_MOVED_FROM) {
+                    log_line("moved_from: %s", file->fn);
+                } else if (event->mask & IN_MOVED_TO) {
+                    log_line("moved_to: %s", file->fn);
+                }
 
                 do_exec = 1;
             }
