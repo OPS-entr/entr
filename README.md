@@ -273,6 +273,7 @@ entr/
 - 원본 entr 프로젝트: http://eradman.com/entrproject/
 - inotify 문서: `man 7 inotify`
 - 데몬 프로세스: "Advanced Programming in the UNIX Environment" - Chapter 13
+- log 기능: 'man 2 open', 'man 3 printf'
 
 ## 버전
 
